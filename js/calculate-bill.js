@@ -26,10 +26,10 @@ function totalPhoneBill(billString){
     //loop over all the bill items
     for (var i=0;i<billItems.length;i++){
         var billItem = billItems[i].trim();
-        if (billItem === "call"){
+        if (billItem === "call".toUpperCase() || billItem === "CALL".toLowerCase() || billItem === "Call"){
             billTotal += 2.75;
         }
-        else if (billItem === "sms"){
+        else if (billItem === "sms".toUpperCase() || billItem === "SMS".toLowerCase() || billItem === "Sms"){
             billTotal += 0.75;
         }
     }

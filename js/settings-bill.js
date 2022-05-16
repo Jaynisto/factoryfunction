@@ -29,38 +29,48 @@ function updateFunction(){
     if(criticalLevel){
         criticalLevelOne = Number(criticalLevel);
     }
+    totalCostSetEleme.classList.remove("danger");
+    totalCostSetEleme.classList.remove("warning");
 
 }
 
 var callsSet = 0;
 var smsSet = 0;
 
+function countingFunction(){
+    return Number(callsSet) + Number(smsSet);
+}
+
+function cricalFunction(){
+    callsTotalSetEleme.innerHTML = callsSet.toFixed(2);
+        smsTotalSetEleme.innerHTML = smsSet.toFixed(2);
+        var counts = countingFunction();    
+        totalCostSetEleme.classList.remove("danger");
+        totalCostSetEleme.classList.remove("warning");
+        if (counts >= warningLevelOne && counts < criticalLevelOne){
+            totalCostSetEleme.classList.add("warning");
+        }
+        if (counts >= criticalLevelOne){
+             totalCostSetEleme.classList.add("danger");
+        }
+        totalCostSetEleme.innerHTML = Number(counts).toFixed(2);
+}
+
+
 function settingBillTotal(){
     var checkedRadioSetBtn = document.querySelector("input[name='billItemTypeWithSettings']:checked").value;
-    if (checkedRadioSetBtn === "call"){
-        callsSet += Number(callCostSet);
-    }
-    else if (checkedRadioSetBtn === "sms"){
-        smsSet += Number(smsCostSet);
-    }
-    
-    callsTotalSetEleme.innerHTML = callsSet.toFixed(2);
-    smsTotalSetEleme.innerHTML = smsSet.toFixed(2);
-    var totalCostSet = Number(callsSet) + Number(smsSet);
-    totalCostSetEleme.innerHTML = Number(totalCostSet).toFixed(2);
-    
-
-     totalCostSetEleme.classList.remove("danger");
-     totalCostSetEleme.classList.remove("warning");
- 
-    if (totalCostSet >= warningLevelOne && totalCostSet < criticalLevelOne){
-        totalCostSetEleme.classList.add("warning");
-    }
-    if (totalCostSet >= criticalLevelOne){
-         totalCostSetEleme.classList.add("danger");
-    }
-    
+    var amu = countingFunction();
+    if(amu < criticalLevelOne){
+        if (checkedRadioSetBtn === "call"){
+            callsSet += Number(callCostSet);
+        }
+        else if (checkedRadioSetBtn === "sms"){
+            smsSet += Number(smsCostSet);
+        }
+    } 
+    cricalFunction();
 }
+
 
 TotalAddSetBtn.addEventListener('click', settingBillTotal);
 update.addEventListener('click', updateFunction);
