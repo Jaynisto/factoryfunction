@@ -29,9 +29,8 @@ function updateFunction(){
     if(criticalLevel){
         criticalLevelOne = Number(criticalLevel);
     }
-    totalCostSetEleme.classList.remove("danger");
-    totalCostSetEleme.classList.remove("warning");
-
+    cricalFunction(); 
+    
 }
 
 var callsSet = 0;
@@ -45,8 +44,8 @@ function cricalFunction(){
     callsTotalSetEleme.innerHTML = callsSet.toFixed(2);
         smsTotalSetEleme.innerHTML = smsSet.toFixed(2);
         var counts = countingFunction();    
-        totalCostSetEleme.classList.remove("danger");
         totalCostSetEleme.classList.remove("warning");
+        totalCostSetEleme.classList.remove("danger");
         if (counts >= warningLevelOne && counts < criticalLevelOne){
             totalCostSetEleme.classList.add("warning");
         }
