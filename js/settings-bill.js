@@ -1,76 +1,117 @@
-//add button
-const TotalAddSetBtn = document.querySelector(".addButton");
-const callsTotalSetEleme = document.querySelector(".callTotalSettings");
-const smsTotalSetEleme = document.querySelector(".smsTotalSettings");
-const totalCostSetEleme = document.querySelector(".totalSettings");
-//ubdate
-const update = document.querySelector(".updateSettings");
+function BillWithSettings(){
+    // Declaring variables that are going to be passed in
+    var theCallCost = 0;
+    var theSmsCost = 0;
+    var theWarningLevel = 0;
+    var theCriticalLevel = 0;
 
-var callCostSet = 0;
-var smsCostSet = 0;
-var warningLevelOne = 0;
-var criticalLevelOne = 0;
+    //Declaring Total costs
+    var callCostTotal = 0;
+    var smsCostTotal = 0;
 
-function updateFunction(){
-    const callCostS = document.querySelector(".callCostSetting").value;
-    const smsCostS = document.querySelector(".smsCostSetting").value;
-    const warningLevel = document.querySelector(".warningLevelSetting").value;
-    const criticalLevel = document.querySelector(".criticalLevelSetting").value;
-
-    if(callCostS){
-        callCostSet = Number(callCostS);
+    // Declaring  a function that sets in the call cost
+    function setCallCost(callCost){
+        theCallCost = callCost;
     }
-    if(smsCostS){
-        smsCostSet = Number(smsCostS);
+
+    // Declaring a function that will get the Call cost passed when it was set
+    function getCallCost(){
+        return theCallCost;
     }
-    if(warningLevel){
-        warningLevelOne = Number(warningLevel);
+
+    // Declaring  a function that sets in the sms cost
+    function setSmsCost(smsCost){
+        theSmsCost = smsCost;
     }
-    if(criticalLevel){
-        criticalLevelOne = Number(criticalLevel);
+
+    // Declaring a function that will get the Sms cost passed when it was set
+    function getSmsCost(){
+        return theSmsCost;
     }
-    cricalFunction(); 
-    
-}
 
-var callsSet = 0;
-var smsSet = 0;
+    // Declaring a function that sets the warning level
+    function setWarningLevel(warningLevel){
+        theWarningLevel = warningLevel;
+    }
 
-function countingFunction(){
-    return Number(callsSet) + Number(smsSet);
-}
+    // Declaring a function that gets the warning level passed when it was set
+    function getWarningLevel(){
+        return theWarningLevel;
+    }
 
-function cricalFunction(){
-    callsTotalSetEleme.innerHTML = callsSet.toFixed(2);
-        smsTotalSetEleme.innerHTML = smsSet.toFixed(2);
-        var counts = countingFunction();    
-        totalCostSetEleme.classList.remove("warning");
-        totalCostSetEleme.classList.remove("danger");
-        if (counts >= warningLevelOne && counts < criticalLevelOne){
-            totalCostSetEleme.classList.add("warning");
+    // Declaring a function that sets the critical level
+    function setCriticalLevel(criticalLevel){
+        theCriticalLevel = criticalLevel;
+    }
+
+    // Declaring a function that gets the critical level passed when it was set
+    function getCriticalLevel(){
+        return theCriticalLevel;
+    }
+
+    //Declaring a function that enables you to make a call.
+    function makeCall(){
+        if(!hasReachedCriticalLevel()){
+            callCostTotal += theCallCost;
         }
-        if (counts >= criticalLevelOne){
-             totalCostSetEleme.classList.add("danger");
+    }
+
+    // Declaring a function that that gets total cost.
+    function getTotalCost(){
+        return callCostTotal + smsCostTotal;
+    }
+
+    // Declaring a function that that gets total call cost.
+    function getCallTotalCost(){
+        return callCostTotal;
+    }
+
+    // Declaring a function that that sends sms.
+    function sendSms(){
+        if(!(hasReachedCriticalLevel())){
+            smsCostTotal += theSmsCost;
         }
-        totalCostSetEleme.innerHTML = Number(counts).toFixed(2);
+    }
+
+    // Declaring a function that that gets total sms cost.
+    function getSmsTotalCost(){
+        return smsCostTotal;
+    }
+
+    // Declaring a function for levels.
+    function hasReachedCriticalLevel(){
+        return getTotalCost() >= getCriticalLevel();
+    }
+
+    // Declaring a function for levels
+    function totalClassName(){
+        if(getTotalCost() >= getCriticalLevel()){
+            return "danger";
+        }
+        else if(getTotalCost() >= getWarningLevel()){
+            return "warning";
+        }
+    }
+
+
+
+// Returning all the Objects.
+    return{
+        setCallCost,
+        getCallCost,
+        setSmsCost,
+        getSmsCost,
+        setWarningLevel,
+        getWarningLevel,
+        setCriticalLevel,
+        getCriticalLevel,
+        makeCall,
+        getTotalCost,
+        getCallTotalCost,
+        sendSms,
+        getSmsTotalCost,
+        totalClassName
+
+
+    }
 }
-
-
-function settingBillTotal(){
-    var checkedRadioSetBtn = document.querySelector("input[name='billItemTypeWithSettings']:checked").value;
-    var amu = countingFunction();
-    if(amu < criticalLevelOne){
-        if (checkedRadioSetBtn === "call"){
-            callsSet += Number(callCostSet);
-        }
-        else if (checkedRadioSetBtn === "sms"){
-            smsSet += Number(smsCostSet);
-        }
-    } 
-    cricalFunction();
-}
-
-
-TotalAddSetBtn.addEventListener('click', settingBillTotal);
-update.addEventListener('click', updateFunction);
-
